@@ -13,44 +13,40 @@ var (
     err error
 )
 
-type Product struct {
-    Id          int   
-    Title       string
-    Description string
-    Photo       string  
-    Photos      []string
-    Price       string
+type Comment struct {
+    CommentId, ParentId int   
+    CommentText, CommentorName, Link, AvatarLink, TimeStamp string
 }
 
 
 
-func myProducts(owner string) ([]Product, error){                                                           
+func myComments(link string) ([]Comment, error){                                                           
                                                                                                 
-    rows, err := db.Query("select id, title, description, photos, price from stores.products where owner = ?", owner)                      
+    rows, err := db.Query("select comment_id, parent_id, commentor_name,comment_text, created_at from comments.comment where link= ?", link)                      
     if err != nil {                                                                             
         fmt.Println(err)                                                                        
     }                                                                                           
                                                                                                 
-    var products = []Product{}                                                                  
-    var p = Product{}                                                                            
+    var comments = []Comment{}                                                                  
+    var c = Comment{}                                                                            
                                                                                                  
     // iterate over rows                                                                         
     for rows.Next() {                                                                            
-        err = rows.Scan(&p.Id, &p.Title, &p.Description, &p.Photo, &p.Price)                    
+        err = rows.Scan(&c.CommentId, &c.ParentId, &c.CommentorName, &c.CommentText,&c.TimeStamp)                    
         if err != nil {                                                                                                         
             fmt.Println("At get all my product", err)                                        
         }                                                                                                         
-        products = append(products, p)                                                                            
+        comments = append(comments, c)                                                                            
                                                                                                                   
-        fmt.Println(p)                                                                                             
+        fmt.Println(c)                                                                                             
     }                                                                                                             
-    return products, nil                                                                                          
+    return comments, nil                                                                                          
 }                      
 
 func main() {
     d := setdb()
     defer d.Close()
-    result, _ := myProducts("admin@email.com")
+    result, _ := myComments("localhost:1323")
 
     fmt.Println()                                                                                             
     fmt.Println()                                                                                             

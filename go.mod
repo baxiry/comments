@@ -7,4 +7,5 @@ require (
 	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/labstack/echo-contrib v0.11.0 // indirect
 	github.com/labstack/echo/v4 v4.3.0 // indirect
+	golang.org/x/tools v0.1.4 // indirect
 )

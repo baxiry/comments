@@ -14,15 +14,36 @@ var (
 	err error
 )
 
-type Product struct {
-	Id          int
-	Title       string
-    Catigory    string
-	Description string
-	Photo       string
-	Photos      []string
-	Price       string
+
+type Comment struct {
+    CommentId, ParentId int   
+    CommentText, CommentorName, Link, AvatarLink, TimeStamp string
 }
+
+
+
+func myComments(link string) ([]Comment, error){                                                           
+                                                                                                
+    rows, err := db.Query("select comment_id, parent_id, commentor_name,comment_text, created_at from comments.comment where link= ?", link)                      
+    if err != nil {                                                                             
+        fmt.Println(err)                                                                        
+    }                                                                                           
+                                                                                                
+    var comments = []Comment{}                                                                  
+    var c = Comment{}                                                                            
+                                                                                                 
+    // iterate over rows                                                                         
+    for rows.Next() {                                                                            
+        err = rows.Scan(&c.CommentId, &c.ParentId, &c.CommentorName, &c.CommentText,&c.TimeStamp)                    
+        if err != nil {                                                                                                         
+            fmt.Println("At get all my product", err)                                        
+        }                                                                                                         
+        comments = append(comments, c)                                                                            
+                                                                                                                  
+        fmt.Println(c)                                                                                             
+    }                                                                                                             
+    return comments, nil                                                                                          
+}                      
 
 func updateUserInfo(name, email, phon string, uid int) error {
 
@@ -264,3 +285,16 @@ func filter(slc []string) []string {
 	}
 	return res
 }
+
+
+type Product struct {
+	Id          int
+	Title       string
+    Catigory    string
+	Description string
+	Photo       string
+	Photos      []string
+	Price       string
+}
+
+

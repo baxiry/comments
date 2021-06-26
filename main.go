@@ -9,22 +9,15 @@ import (
 
 func main() {
 	e := echo.New()
-
-    //e.Renderer = t
     e.Renderer = templ()
-
-// start
-
     db := setdb()
     defer db.Close()
-    
+   
+
+    // middleware
     e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
-
-    // files
-    e.Static("/a", assets())
-    e.Static("/fs", photoFold())
-
+    // routers
     e.GET("/home", homePage)//index)
     e.GET("/", index)
     e.POST("/", saveComment)
@@ -38,10 +31,9 @@ func main() {
     e.GET("/upacount",updateAcount)
     e.POST("/upacount",updateAcountInfo)
  
-// end
-
-
-
+    // files
+    e.Static("/a", assets())
+    e.Static("/fs", photoFold())
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

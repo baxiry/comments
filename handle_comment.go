@@ -9,8 +9,8 @@ import (
 
 
 func index(c echo.Context) error {
-    return c.Render(http.StatusOK, "index.html", "Adamin")
-    // if err != nil {fmt.Println(err); return nil}; return nil;
+    err :=  c.Render(http.StatusOK, "index.html", "Adamin")
+    if err != nil {fmt.Println(err); return nil}; return nil;
 }
 
 

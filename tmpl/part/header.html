@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html> <!-- <html dir="rtl"> for arabic -->
+<head>
+  <link rel="icon" type="image/png" sizes="32x32" href="/a/icon/favicon-32x32.png"> 
+  <!-- <link rel="manifest" href="/manifest.webmanifest"> <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">--><!--<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">--> 
+  <meta charset=UTF-8>
+  <script>/* Todo : use framwork.min.js here */ </script>
+  <link rel="stylesheet" href="/a/style.css">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<nav>
+   <a href="/">Home</a>
+   <a href="/mystore">Mystore</a>
+   <a href="/stores">Stores</a>
+   <a href="/upload">upload</a> 
+
+   <div class=acount>
+   {{if .userid }} 
+   <a href="/acount/{{.name}}" >{{.name}}</a>
+   {{- else}}
+   <a href="/login">Login</a>
+   <a href="/sign">Signup</a>
+   {{- end}}
+   </div>
+</nav>

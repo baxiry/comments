@@ -1,0 +1,76 @@
+package main
+
+import (
+	"database/sql"
+	"fmt"
+	"os"
+
+	_ "github.com/go-sql-driver/mysql"
+)
+
+var (
+    db  *sql.DB
+    err error
+)
+
+type Product struct {
+    Id          int   
+    Title       string
+    Description string
+    Photo       string  
+    Photos      []string
+    Price       string
+}
+
+
+
+func myProducts(owner string) ([]Product, error){                                                           
+                                                                                                
+    rows, err := db.Query("select id, title, description, photos, price from stores.products where owner = ?", owner)                      
+    if err != nil {                                                                             
+        fmt.Println(err)                                                                        
+    }                                                                                           
+                                                                                                
+    var products = []Product{}                                                                  
+    var p = Product{}                                                                            
+                                                                                                 
+    // iterate over rows                                                                         
+    for rows.Next() {                                                                            
+        err = rows.Scan(&p.Id, &p.Title, &p.Description, &p.Photo, &p.Price)                    
+        if err != nil {                                                                                                         
+            fmt.Println("At get all my product", err)                                        
+        }                                                                                                         
+        products = append(products, p)                                                                            
+                                                                                                                  
+        fmt.Println(p)                                                                                             
+    }                                                                                                             
+    return products, nil                                                                                          
+}                      
+
+func main() {
+    d := setdb()
+    defer d.Close()
+    result, _ := myProducts("admin@email.com")
+
+    fmt.Println()                                                                                             
+    fmt.Println()                                                                                             
+    fmt.Println()                                                                                             
+    fmt.Println("result is : ", result)
+
+}
+
+
+func setdb() *sql.DB {
+    db, err = sql.Open(
+        "mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
+    if err != nil { // why no error when db is not runinig ?? 
+        fmt.Println("run mysql server", err)
+    }
+    
+    if err = db.Ping(); err != nil {
+        fmt.Println("mybe database is not runing or error is: ", err)
+        os.Exit(1)
+    }
+    return db
+}
+

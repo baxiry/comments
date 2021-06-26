@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+ <h2> hello {{.}}! welcome in comments server </h2>
+
+<form action="/" method=post>
+  <label for="name">First name:</label><br>
+  <input type="text" name="name" id=name><br>
+  <label for="comment">Last name:</label><br>
+  <input type="text" name="comment" id=comment><br><br>
+  <input type="submit" value="Submit" onclick=add()>
+</form>
+  <output></output>
+  <p></p>
+<script>
+//function $(element) {
+  //  return document.querySelector(element)
+//}
+    function add() {
+document.querySelector('p').innerHTML = document.querySelector('#name').value + document.querySelector('#comment').value
+    }
+</script>   
+</body>
+</html>
+
+

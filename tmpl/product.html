@@ -1,0 +1,36 @@
+{{ template "header.html" . }}
+<body>
+<style>
+</style>
+
+<div class=catigories>
+</div>
+<div class=catigories>
+    <a href="/cars">cars</a>
+    <a href="/animals">animals</a>
+    <a href="/mobiles">mobile</a>
+    <a href="/motors">motors</a>
+    <a href="/computers">computers</a>
+    <a href="/services">services</a>
+    <a href="/authers">authers</a>
+</div>
+
+<div class="center cor">                                                        
+    <div class="card">
+        <h3>{{.product.Title}}</h3>
+        <p><b>Details:</b> {{.product.Description}} </p>
+        <p><b>Price:</b>   {{.product.Price}}</p>
+    </div>
+
+        <div class="card">
+        {{ range .product.Photos }}
+        {{if .}}
+              <img src="/fs/{{.}}" style="width:100%">
+        {{end}}
+        {{end}}
+        </div>
+</div>
+<br>
+
+</body>
+</html>

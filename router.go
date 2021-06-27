@@ -23,9 +23,9 @@ func templ() *Template {
 		p = "/root/store/"
 	}
 	files := []string{
-        p + "tmpl/home.html",p + "tmpl/upacount.html", p + "tmpl/acount.html",
-        p + "tmpl/login.html", p + "tmpl/sign.html", p + "tmpl/404.html", p + "tmpl/updatefotos.html",
-        p + "tmpl/updateProd.html", p + "tmpl/index.html", p + "tmpl/notfound.html",
+        p + "tmpl/home.html",p + "tmpl/upacount.html", p + "tmpl/acount.html",p + "tmpl/blog.html",
+        p + "tmpl/login.html", p + "tmpl/sign.html", p + "tmpl/404.html", p + "tmpl/upphotos.html",
+        p + "tmpl/upcomment.html", p + "tmpl/comment.html", p + "tmpl/notfound.html",
 		p + "tmpl/upload.html", p + "tmpl/part/header.html", p + "tmpl/part/footer.html",
 
 	}

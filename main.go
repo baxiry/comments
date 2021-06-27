@@ -19,7 +19,8 @@ func main() {
 
     // routers
     e.GET("/home", homePage)//index)
-    e.GET("/", index)
+    e.GET("/", comment)
+    e.GET("/blog", blog)
     e.POST("/", saveComment)
     
     // account and verefy

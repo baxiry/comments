@@ -22,10 +22,9 @@ func updateAcountInfo(c echo.Context) error {
 
     name := c.FormValue("name")
     email := c.FormValue("email")
-    phon := c.FormValue("phon")
-    fmt.Println("name+email+phon is :", name, email, phon)
+    fmt.Println("name+email is :", name, email)
 
-    err := updateUserInfo(name, email, phon, uid.(int))
+    err := updateUserInfo(name, email, uid.(int))
     if err != nil {
         fmt.Println("error at update db function", err)
     }
@@ -35,7 +34,6 @@ func updateAcountInfo(c echo.Context) error {
     
     // redirect to acoun page
     userid := strconv.Itoa(uid.(int))
-    
     
     return c.Redirect(303, "/acount/"+userid)
 }
@@ -56,7 +54,7 @@ func updateAcount(c echo.Context) error {
         return c.Redirect(http.StatusSeeOther, "/login") // 303 code 
     }
 
-    data["name"], data["email"],data["phon"], data["linkavatar"] = getUserInfo(uid.(int))
+    data["name"], data["email"], data["linkavatar"] = getUserInfo(uid.(int))
     
     data["id"] = uid
 
@@ -118,8 +116,7 @@ func signup(c echo.Context) error {
 	name := c.FormValue("username")
 	pass := c.FormValue("password")
 	email := c.FormValue("email")
-	phon := c.FormValue("phon")
-	err := insertUser(name, pass, email, phon)
+	err := insertUser(name, pass, email)
 	if err != nil {
 		//fmt.Println(err)
 		return c.Render(200, "sign.html", "wrrone")

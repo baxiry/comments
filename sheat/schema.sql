@@ -1,11 +1,9 @@
 CREATE TABLE users (
-    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL AUTO_INCREMENT primary key,
     username varchar(100),
     password varchar(100),
     email varchar(100),
-    phon varchar(100),
     linkavatar varchar(255),
-    primary key (id)
 );
 
 CREATE TABLE users ( id INT NOT NULL AUTO_INCREMENT, username varchar(30), password varchar(30), email varchar(70), phon varchar(15), linkavatar varchar(70), primary key (id));

@@ -14,6 +14,38 @@ var (
 	err error
 )
 
+
+type Comment struct {
+    CommentId, ParentId,  UserId              int
+    CommentText,  Link, AvatarLink, TimeStamp string
+}
+
+
+func getComments(link string) []*Comment {
+    qur := "select comment_id, user_id, parent_id, comment_text, created_at from comments.comments where link = ?"
+    rows, err := db.Query(qur, link)
+	if err != nil {
+		fmt.Println("at query func owner id db select ", err)
+	}
+	defer rows.Close() // ??
+
+    comments := make([]*Comment,0)
+    c := Comment{}
+
+	// iterate over rows
+	for rows.Next() {
+		err = rows.Scan(&c.CommentId, &c.ParentId, &c.UserId, &c.CommentText, &c.TimeStamp)
+		if err != nil {
+			fmt.Println("At get all my product", err)
+		}
+        comments = append(comments, &c)
+
+		fmt.Println(c)
+	}
+	return comments
+}
+
+
 func insertUser(user, pass, email string) error {
 	insert, err := db.Query(
 		"INSERT INTO comments.users(username, password, email) VALUES ( ?, ?, ?)",
@@ -31,33 +63,6 @@ func insertUser(user, pass, email string) error {
 
 
 
-type Comment struct {
-    CommentId, ParentId,  UserId              int
-    CommentText,  Link, AvatarLink, TimeStamp string
-}
-
-func myComments(link string) ([]Comment, error) {
-
-    rows, err := db.Query("select comment_id, parent_id, user_id,comment_text, created_at from comments.comment where link= ?", link)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	var comments = []Comment{}
-	var c = Comment{}
-
-	// iterate over rows
-	for rows.Next() {
-		err = rows.Scan(&c.CommentId, &c.ParentId, &c.UserId, &c.CommentText, &c.TimeStamp)
-		if err != nil {
-			fmt.Println("At get all my product", err)
-		}
-		comments = append(comments, c)
-
-		fmt.Println(c)
-	}
-	return comments, nil
-}
 
 func updateUserInfo(name, email string, uid int) error {
 
@@ -106,24 +111,6 @@ func getUsername(femail string) (int, string, string, string) {
 		fmt.Println("no result or", err.Error())
 	}
 	return userid, name, email, password
-}
-
-
-func getProductFotos(id int) ([]string, error) {
-	fotos := make([]string, 1)
-	var picts string
-
-	err := db.QueryRow(
-		"SELECT photos FROM comments.products WHERE id = ?",
-		id).Scan(&picts)
-	if err != nil {
-		return nil, err
-	}
-
-	list := strings.Split(picts, "];[")
-	// TODO split return 2 item in some casess, is this a bug ?
-	fotos = filter(list)
-	return fotos, nil
 }
 
 func updateProductFotos(photos string, id int) error {
@@ -191,28 +178,6 @@ func deleteProducte(id int) error {
 	return nil
 }
 
-func myProducts(ownerid int) []Product {
-	rows, err := db.Query("select id, title, description, photos, price from comments.products where ownerid = ?", ownerid)
-	if err != nil {
-		fmt.Println("at query func owner id db select ", err)
-	}
-	defer rows.Close() // ??
-
-	var products = []Product{}
-	var p = Product{}
-
-	// iterate over rows
-	for rows.Next() {
-		err = rows.Scan(&p.Id, &p.Title, &p.Description, &p.Photo, &p.Price)
-		if err != nil {
-			fmt.Println("At myPorducts scan func", err)
-		}
-		//if p.Photo == "" {fmt.Println("no fotots") }
-		products = append(products, p)
-
-	}
-	return products
-}
 
 func getProduct(id int) (Product, error) {
 	var p Product

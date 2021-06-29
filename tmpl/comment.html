@@ -5,7 +5,8 @@
     <title></title>
 </head>
 <body>
- <h6> {{.}}</h6>
+    <div class="center">
+        <h4> {{.username}}</h4>
 
 <form action="/" method=post>
   <label for="name">First name:</label><br>
@@ -14,8 +15,13 @@
   <input type="text" name="comment" id=comment><br><br>
   <input type="submit" value="Submit" onclick=add()>
 </form>
+<div> 
+    {{range .comments}} <div>{{.}}</div>{{end}}
+</div>
   <output></output>
   <p></p>
+    </div>
+
 <script>
 //function $(element) {
   //  return document.querySelector(element)

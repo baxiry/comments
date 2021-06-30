@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -248,9 +249,17 @@ func setdb() *sql.DB {
 	}
 
 	if err = db.Ping(); err != nil {
-		// TODO handle this error: dial tcp 127.0.0.1:3306: connect: connection refused
-		fmt.Println("mybe database is not runing or error is: ", err)
-		os.Exit(1)
+
+        cmd := exec.Command("sudo", "service", "mariadb", "start") 
+                                                                       
+        cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))                        
+                                                                       
+        errc := cmd.Run()                                                     
+                                                                          
+        if errc != nil {                                                      
+            fmt.Println(errc)                                                   
+        }
+
 	}
 	return db
 }

@@ -12,66 +12,65 @@ import (
 
 // updateAcount updates Acount information
 func updateAcountInfo(c echo.Context) error {
-    //data := make(map[string]interface{},1)
-    sess, _ := session.Get("session", c)
-    uid := sess.Values["userid"]
-    if uid == nil {
-        // login first
-        return c.Redirect(http.StatusSeeOther, "/login") // 303 code 
-    }
+	//data := make(map[string]interface{},1)
+	sess, _ := session.Get("session", c)
+	uid := sess.Values["userid"]
+	if uid == nil {
+		// login first
+		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
+	}
 
-    name := c.FormValue("name")
-    email := c.FormValue("email")
-    fmt.Println("name+email is :", name, email)
+	username := c.FormValue("username")
+	email := c.FormValue("email")
+	fmt.Println("username+email is :", username, email)
 
-    err := updateUserInfo(name, email, uid.(int))
-    if err != nil {
-        fmt.Println("error at update db function", err)
-    }
+	err := updateUserInfo(username, email, uid.(int))
+	if err != nil {
+		fmt.Println("error at update db function", err)
+	}
 
-    // update session information
-    mysess(c, name, uid.(int))
-    
-    // redirect to acoun page
-    userid := strconv.Itoa(uid.(int))
-    
-    return c.Redirect(303, "/acount/"+userid)
+	// update session information
+	setSession(c, username, uid.(int))
+
+	// redirect to acoun page
+	userid := strconv.Itoa(uid.(int))
+
+	return c.Redirect(303, "/acount/"+userid)
 }
-
 
 // updateAcount updates Acount information
 func updateAcount(c echo.Context) error {
-    data := make(map[string]interface{},1)
-    sess, _ := session.Get("session", c)
-    
-    uid := sess.Values["userid"]
-    name := sess.Values["name"]
+	data := make(map[string]interface{}, 1)
+	sess, _ := session.Get("session", c)
 
-    data["name"] = name
-    
-    if uid == nil {
-        // login first
-        return c.Redirect(http.StatusSeeOther, "/login") // 303 code 
-    }
+	userid := sess.Values["userid"]
+	username := sess.Values["username"]
 
-    data["name"], data["email"], data["linkavatar"] = getUserInfo(uid.(int))
-    
-    data["id"] = uid
+	data["username"] = username
 
-    fmt.Println(data)
- 
-    return c.Render(200, "upacount.html", data)
+    if userid == nil {
+		// login first
+		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
+	}
+
+    data["username"], data["email"], data["linkavatar"] = getUserInfo(userid.(int))
+
+    data["userid"] = userid
+
+	fmt.Println(data)
+
+	return c.Render(200, "upacount.html", data)
 }
 
 // acount render profile of user.
 func acount(c echo.Context) error {
 	sess, _ := session.Get("session", c)
-    data := make(map[string]interface{}, 2)
-	data["name"] = sess.Values["name"]
-    data["id"] = sess.Values["userid"]
-    // TODO get all info like foto from db
+	data := make(map[string]interface{}, 2)
+	data["username"] = sess.Values["username"]
+    data["userid"] = sess.Values["userid"]
+	// TODO get all info like foto from db
 
-    if data["id"] == nil {
+    if data["userid"] == nil {
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 	return c.Render(200, "acount.html", data)
@@ -84,28 +83,26 @@ func getUser(c echo.Context) error {
 	return c.Render(http.StatusOK, "user.html", id)
 }
 
-
-func mysess(c echo.Context, name string, userid int) {
+func setSession(c echo.Context, username string, userid int) {
 	sess, _ := session.Get("session", c)
 	sess.Options = &sessions.Options{
 		Path:     "/",
-        MaxAge:   60 * 60, // = 1h,
-		HttpOnly: true, // no websocket or any thing else
+		MaxAge:   60 * 60, // = 1h,
+		HttpOnly: true,    // no websocket or any thing else
 	}
-	sess.Values["name"] = name
+	sess.Values["username"] = username
 	sess.Values["userid"] = userid
 	sess.Save(c.Request(), c.Response())
 }
 
-
 func login(c echo.Context) error {
 	femail := c.FormValue("email")
 	fpass := c.FormValue("password")
-    userid,  name, email, pass := getUsername(femail)
+	userid, username, email, pass := getUsername(femail)
 
 	if pass == fpass && femail == email {
-		//userSession[email] = name
-        mysess(c, name, userid)
+		//userSession[email] = username
+		setSession(c, username, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
 	}
@@ -113,14 +110,13 @@ func login(c echo.Context) error {
 }
 
 func signup(c echo.Context) error {
-	name := c.FormValue("username")
+	username := c.FormValue("username")
 	pass := c.FormValue("password")
 	email := c.FormValue("email")
-	err := insertUser(name, pass, email)
+	err := insertUser(username, pass, email)
 	if err != nil {
 		//fmt.Println(err)
 		return c.Render(200, "sign.html", "wrrone")
 	}
 	return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 }
-

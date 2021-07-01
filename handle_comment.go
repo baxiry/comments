@@ -13,7 +13,7 @@ func comment(c echo.Context) error {
     data := make(map[string]interface{},2)
     sess, _ := session.Get("session", c)
     data["userid"] = sess.Values["userid"]
-    data["username"] = sess.Values["name"]
+    data["username"] = sess.Values["username"]
 
     data["comments"] = getComments("localhost:1323")
 
@@ -23,7 +23,14 @@ func comment(c echo.Context) error {
 
 
 func blog(c echo.Context) error {
-    err :=  c.Render(http.StatusOK, "blog.html", nil)
+    data := make(map[string]interface{}, 2)
+    
+    sess, _ := session.Get("session", c)
+    data["userid"] = sess.Values["userid"]
+    data["username"] = sess.Values["username"]
+    fmt.Println("user name is : ", data["username"])
+   
+    err :=  c.Render(http.StatusOK, "blog.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;
 }
 

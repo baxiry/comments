@@ -91,13 +91,14 @@ func updateUserInfo(name, email string, uid int) error {
 
 // gets all user information for update this info
 func getUserInfo(userid int) ( string, string, string) {
-	var name, email, phon, avatar string
+	var name, email, avatar string
 	err := db.QueryRow(
         "SELECT username, email, linkavatar FROM comments.users WHERE user_id = ?",
-		userid).Scan(&name, &email, &phon, &avatar)
+		userid).Scan(&name, &email, &avatar)
 	if err != nil {
 		fmt.Println("no result or", err.Error())
 	}
+    fmt.Println("name is : ", name, "email is : ", email, "avatar is ", avatar)
 	return name, email, avatar
 }
 

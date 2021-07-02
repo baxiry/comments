@@ -5,31 +5,26 @@
     <title></title>
 </head>
 <body>
-    <div class="center">
-        <h4> {{.username}}</h4>
+<div class="center">
+  <h4> {{.username}}</h4>
 
-<form action="/" method=post>
-  <label for="name">First name:</label><br>
-  <input type="text" name="name" id=name><br>
-  <label for="comment">Last name:</label><br>
-  <input type="text" name="comment" id=comment><br><br>
-  <input type="submit" value="Submit" onclick=add()>
-</form>
-<div> 
-    {{range .comments}} <div>{{.}}</div>{{end}}
-</div>
-  <output></output>
-  <p></p>
+    <form action="/" method=post>
+      <label for="name">First name:</label><br>
+      <input type="text" name="name" id=name><br>
+      <label for="comment">Last name:</label><br>
+      <input type="text" name="comment" id=comment><br><br>
+      <input type="submit" value="Submit" >
+    </form>
+    <div class=cmnt> 
+        {{range .comments}} <div>{{.}}</div>{{end}}
     </div>
+</div>
+<style>
+.cmnt {
+    width: 100%;
+} 
 
-<script>
-//function $(element) {
-  //  return document.querySelector(element)
-//}
-    function add() {
-//document.querySelector('p').innerHTML = document.querySelector('#name').value + document.querySelector('#comment').value
-    }
-</script>   
+</style>
 </body>
 </html>
 

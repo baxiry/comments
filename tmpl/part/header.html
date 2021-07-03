@@ -9,18 +9,4 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<nav>
-   <a href="/">Home</a>
-   <a href="/mystore">Mystore</a>
-   <a href="/stores">Stores</a>
-   <a href="/upload">upload</a> 
 
-   <div class=acount>
-   {{if .userid }} 
-   <a href="/acount/{{.username}}" >{{.username}}</a>
-   {{- else}}
-   <a href="/login">Login</a>
-   <a href="/sign">Signup</a>
-   {{- end}}
-   </div>
-</nav>

@@ -30,16 +30,27 @@ func blog(c echo.Context) error {
     data["username"] = sess.Values["username"]
     fmt.Println("user name is : ", data["username"])
    
+    // return c.Render(http.StatusOK, "comment.html", data)
     err :=  c.Render(http.StatusOK, "blog.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;
 }
 
 func saveComment(c echo.Context) error {
+    
+    sess, _ := session.Get("session", c)
+    data := make(map[string]interface{}, 2)
+    data["userid"] = sess.Values["userid"]
+    data["username"] = sess.Values["username"]
+
     name := c.FormValue("name")
     comment := c.FormValue("comment")
 
+    // TODO save comment and get data
 
     fmt.Println("name: ",name, "\ncomment", comment)
-    return c.Render(http.StatusOK, "comment.html", "admin")
+    // return c.Render(http.StatusOK, "comment.html", data)
+    err :=  c.Render(http.StatusOK, "comment.html", data)
+    if err != nil {fmt.Println(err); return nil}; return nil;
+
 }
 

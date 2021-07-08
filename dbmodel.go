@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"os"
 	"os/exec"
 	"strings"
 
@@ -41,8 +40,8 @@ func getComments(link string) []*Comment {
 		}
         comments = append(comments, &c)
 
-		fmt.Println(c)
 	}
+    fmt.Println("lenght of data is : ", len(comments))
 	return comments
 }
 
@@ -253,7 +252,7 @@ func setdb() *sql.DB {
 
         cmd := exec.Command("sudo", "service", "mariadb", "start") 
                                                                        
-        cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))                        
+        //cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))                        
                                                                        
         errc := cmd.Run()                                                     
                                                                           

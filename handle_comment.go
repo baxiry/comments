@@ -10,12 +10,14 @@ import (
 
 
 func comment(c echo.Context) error {
+
     data := make(map[string]interface{},2)
     sess, _ := session.Get("session", c)
     data["userid"] = sess.Values["userid"]
     data["username"] = sess.Values["username"]
+    fmt.Println( "usser nam is : ", data["username"])
 
-    data["comments"] = getComments("localhost:1323")
+    data["comments"] = getComments("localhost:1323") // get comments by link of article
 
     err :=  c.Render(http.StatusOK, "comment.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;

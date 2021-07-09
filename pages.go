@@ -16,26 +16,28 @@ func loginPage(c echo.Context) error {
 	return c.Render(200, "login.html", "hello")
 }
 
-// notFoundPage
-func notFoundPage(c echo.Context) error {
-    return c.Render(200, "notfound.html", nil)
-}
-
 func homePage(c echo.Context) error {
 
 	sess, _ := session.Get("session", c)
-	name := sess.Values["name"]
-    uid := sess.Values["userid"]
-	//fmt.Println("name is : ", name)
+	
+    data := make(map[string]interface{}, 3)
+	data["username"] = sess.Values["name"]
+    data["userid"] = sess.Values["userid"]
 
-	data := make(map[string]interface{}, 3)
-	data["name"] = name
-    data["userid"] = uid
 	data["catigories"] = catigories
     return c.Render(http.StatusOK, "home.html", data)
 }
 
 /*
+
+
+// notFoundPage
+func notFoundPage(c echo.Context) error {
+    return c.Render(200, "notfound.html", nil)
+}
+
+
+
 // updateFotosPage router fo update Fotos Page
 func updateFotosPage(c echo.Context) error {
 	data := make(map[string]interface{})

@@ -7,15 +7,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-
-func signPage(c echo.Context) error {
-	return c.Render(200, "sign.html", "hello")
-}
-
-func loginPage(c echo.Context) error {
-	return c.Render(200, "login.html", "hello")
-}
-
 func homePage(c echo.Context) error {
 
 	sess, _ := session.Get("session", c)
@@ -24,7 +15,6 @@ func homePage(c echo.Context) error {
 	data["username"] = sess.Values["name"]
     data["userid"] = sess.Values["userid"]
 
-	data["catigories"] = catigories
     return c.Render(http.StatusOK, "home.html", data)
 }
 

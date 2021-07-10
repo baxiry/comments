@@ -16,6 +16,22 @@ type Comment struct {
 
 
 
+// render comments
+func commentsPage(c echo.Context) error {
+
+    data := make(map[string]interface{},2)
+    sess, _ := session.Get("session", c)
+    data["userid"] = sess.Values["userid"]
+    data["username"] = sess.Values["username"]
+    fmt.Println( "usser nam is : ", data["username"])
+
+    data["comments"] = getComments("localhost:1323") // get comments by link of article
+
+    err :=  c.Render(http.StatusOK, "comment.html", data)
+    if err != nil {fmt.Println(err); return nil}; return nil;
+}
+
+// get comments of article from database
 func getComments(link string) []*Comment {
     qur := "select comment_id, user_id, parent_id, comment_text, created_at from comments.comments where link = ?"
     rows, err := db.Query(qur, link)
@@ -41,21 +57,7 @@ func getComments(link string) []*Comment {
 }
 
 
-
-func comment(c echo.Context) error {
-
-    data := make(map[string]interface{},2)
-    sess, _ := session.Get("session", c)
-    data["userid"] = sess.Values["userid"]
-    data["username"] = sess.Values["username"]
-    fmt.Println( "usser nam is : ", data["username"])
-
-    data["comments"] = getComments("localhost:1323") // get comments by link of article
-
-    err :=  c.Render(http.StatusOK, "comment.html", data)
-    if err != nil {fmt.Println(err); return nil}; return nil;
-}
-
+// save comment in database
 func saveComment(c echo.Context) error {
     
     sess, _ := session.Get("session", c)
@@ -72,7 +74,6 @@ func saveComment(c echo.Context) error {
     // return c.Render(http.StatusOK, "comment.html", data)
     err :=  c.Render(http.StatusOK, "comment.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;
-
 }
 
 /*

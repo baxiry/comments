@@ -9,6 +9,23 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// login if user info is correct
+func login(c echo.Context) error {
+	femail := c.FormValue("email")
+	fpass := c.FormValue("password")
+	userid, username, email, pass := getUsername(femail)
+
+	if pass == fpass && femail == email {
+		//userSession[email] = username
+		setSession(c, username, userid)
+		return c.Redirect(http.StatusSeeOther, "/") // 303 code
+		// TODO redirect to latest page
+	}
+    return c.Render(200, "login.html", "Username or password is wrong")
+    //err := c.Render(200, "login.html", "Username or password is wrong")
+    //if err != nil {fmt.Println("login func error ", err)}; return nil
+}
+
 
 
 func insertUser(user, pass, email string) error {
@@ -39,22 +56,6 @@ func setSession(c echo.Context, username string, userid int) {
 }
 
 
-
-func login(c echo.Context) error {
-	femail := c.FormValue("email")
-	fpass := c.FormValue("password")
-	userid, username, email, pass := getUsername(femail)
-
-	if pass == fpass && femail == email {
-		//userSession[email] = username
-		setSession(c, username, userid)
-		return c.Redirect(http.StatusSeeOther, "/") // 303 code
-		// TODO redirect to latest page
-	}
-	return c.Render(200, "login.html", "Username or password is wrong")
-}
-
-
 func signup(c echo.Context) error {
 	username := c.FormValue("username")
 	pass := c.FormValue("password")
@@ -68,12 +69,22 @@ func signup(c echo.Context) error {
 }
 
 func signPage(c echo.Context) error {
-	return c.Render(200, "sign.html", "hello")
+    data := make(map[string]interface{},1)
+	sess, _ := session.Get("session", c)
+    data["userid"] = sess.Values["userid"]
+    data["username"] = sess.Values["username"]
+    return c.Render(200, "sign.html", data)
+    //fmt.Println( c.Render(200, "sign.html", sess.Values["userid"].(int))); return nil
 }
 
 
 func loginPage(c echo.Context) error {
-	return c.Render(200, "login.html", "hello")
+    data := make(map[string]interface{},1)
+	sess, _ := session.Get("session", c)
+    data["userid"] = sess.Values["userid"]
+    data["username"] = sess.Values["username"]
+    return c.Render(200, "login.html", data)
+    //fmt.Println( c.Render(200, "login.html", data)); return nil
 }
 
 

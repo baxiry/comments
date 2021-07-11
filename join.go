@@ -20,10 +20,12 @@ func login(c echo.Context) error {
 		setSession(c, username, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
-	}
-    return c.Render(200, "login.html", "Username or password is wrong")
-    //err := c.Render(200, "login.html", "Username or password is wrong")
-    //if err != nil {fmt.Println("login func error ", err)}; return nil
+    } 
+
+    data := make(map[string]interface{}, 2)
+    data["userid"] = nil
+    data["error"] = "wrong user information"
+    return c.Render(200, "login.html", data)
 }
 
 

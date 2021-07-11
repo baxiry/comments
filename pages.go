@@ -12,7 +12,7 @@ func homePage(c echo.Context) error {
 	sess, _ := session.Get("session", c)
 	
     data := make(map[string]interface{}, 3)
-	data["username"] = sess.Values["name"]
+    data["username"] = sess.Values["username"]
     data["userid"] = sess.Values["userid"]
 
     return c.Render(http.StatusOK, "home.html", data)

@@ -1,15 +1,14 @@
 {{template "header.html" }}
 <body>
     <div class=container>
+    <div dir=rtl>
     {{if .username}}
     <h4> name is {{.username}}</h4>
     {{else}}
-    <div dir=rtl>
-     <a href="/login">login</a>    
-     <a href="/sign">singup</a>  
-    </div>
-     
+          <a class="btn btn-outline-success m-1" href="/login" >login</a>
+          <a class="btn btn-outline-success m-1" href="/sign" >singup</a>
     {{end}}
+    </div>
     
       <form action="/" method=post>
       <textarea  name="comment" id=comment placeholder="write a comment" rows="3" class="form-control"></textarea> <br>

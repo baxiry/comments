@@ -24,7 +24,7 @@ func login(c echo.Context) error {
 
     data := make(map[string]interface{}, 2)
     data["userid"] = nil
-    data["error"] = "wrong user information"
+    data["error"] = "wrong user info"
     return c.Render(200, "login.html", data)
 }
 

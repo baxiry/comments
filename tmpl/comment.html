@@ -1,6 +1,6 @@
 {{template "header.html" }}
 <body>
-<div class="center">
+    <div class=container>
     {{if .username}}
     <h4> name is {{.username}}</h4>
     {{else}}
@@ -10,17 +10,26 @@
     </div>
      
     {{end}}
+    
+      <form action="/" method=post>
+      <textarea  name="comment" id=comment placeholder="write a comment" rows="3" class="form-control"></textarea> <br>
+      <input type="submit" value="Submit" class="btn btn-primary">
+      </form>
 
-    <form action="/" method=post>
-      <label for="name">First name:</label><br>
-      <input type="text" name="name" id=name><br>
-      <label for="comment">Last name:</label><br>
-      <input type="text" name="comment" id=comment><br><br>
-      <input type="submit" value="Submit" >
-    </form>
-    <div class=cmnt> 
-        {{range .comments}} <div>{{.}}</div>{{end}}
-    </div>
+      <div > 
+        {{range .comments}}
+
+        <div>comment id : {{.CommentId}}</div>
+        <div>parent id :  {{.ParentId}}</div>
+        <div>user id :    {{.UserId}}</div>
+        <div>comment :    {{.CommentText}}</div>
+        <div>link :       {{.Link}}</div>
+        <div>avatar :     {{.AvatarLink}}</div>
+        <div>date :       {{.TimeStamp}}</div>
+        <br>
+
+        {{end}}
+      </div>
 </div>
 <style>
 .cmnt {

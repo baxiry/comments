@@ -10,7 +10,9 @@
     <input type=submit value=submit class="btn btn-secondary">
     <!--  <button type="submit" disabled={!name || !text || text.length < 20 || submitting}>  -->
     {{if .error}}
-    <h4>{{.error}}</h4>
+    <p class=text-danger>
+     {{.error}}
+    </p>
     {{end}}
 </div>
 </div>

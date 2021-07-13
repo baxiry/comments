@@ -24,25 +24,16 @@ func setdb() *sql.DB {
 	if err != nil { // why no error when db is not runinig ??
 		fmt.Println("run mysql server", err)
 		// TODO report this error.
-
-		// wehen db is stoped no error is return.
-		// we expecte errore no database is runing
-
-		// my be this error is fixed with panic ping pong bellow
 	}
 
 	if err = db.Ping(); err != nil {
 
         cmd := exec.Command("sudo", "service", "mariadb", "start") 
-                                                                       
         //cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))                        
-                                                                       
         errc := cmd.Run()                                                     
-                                                                          
         if errc != nil {                                                      
             fmt.Println(errc)                                                   
         }
-
 	}
 	return db
 }
@@ -65,7 +56,7 @@ func templ() *Template {
 	files := []string{
         p + "tmpl/home.html",p + "tmpl/upacount.html", p + "tmpl/acount.html",p + "tmpl/blog.html",
         p + "tmpl/login.html", p + "tmpl/sign.html", p + "tmpl/404.html", p + "tmpl/upphotos.html",
-        p + "tmpl/upcomment.html", p + "tmpl/comment.html", p + "tmpl/notfound.html", 
+        p + "tmpl/upcomment.html", p + "tmpl/comment.html", p + "tmpl/notfound.html",p + "tmpl/post.html", 
 		p + "tmpl/upload.html", p + "tmpl/part/header.html", p + "tmpl/part/footer.html",
 
 	}

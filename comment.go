@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -19,6 +20,7 @@ type Comment struct {
 // render comments
 func commentsPage(c echo.Context) error {
 
+    time.Sleep(time.Second*6)
     data := make(map[string]interface{},2)
     sess, _ := session.Get("session", c)
     data["userid"] = sess.Values["userid"]

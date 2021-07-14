@@ -18,9 +18,10 @@ func main() {
     e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
     // routers
-    e.GET("/", commentsPage)
-    e.POST("/", saveComment)
-    e.GET("/home", homePage)// index
+    e.GET("/api", commentsPage)
+    e.POST("/api", saveComment)
+
+    e.GET("/", homePage)// index
     e.GET("/blog", blog)
     e.GET("/post", postPage)
     

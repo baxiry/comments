@@ -15,9 +15,12 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-    <a class="navbar-brand"  href="/">logoSite</a>
+
       <ul class="navbar-nav">
-        
+        <li class="nav-item">
+            <a class="navbar-brand"  href="/">logoSite</a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
@@ -28,15 +31,15 @@
         <li class="nav-item">
           <a class="nav-link" href="/blog">blog</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/post">post</a>
-        </li>
-
+        
+        {{if .username}}
+            <a  class="btn btn-outline-success m-1" href="/post">new post</a>
+        {{end}}
       </ul>
     </div>
-
-    <div class"row align-items-end">
     {{if .username}}
+   
+    <div class"row align-items-end">
     <a href="/acount/{{.userid}}" class="btn btn-outline-success">{{.username}}</a>
     {{else}}
           <a class="btn btn-outline-success m-1" href="/login" >login</a>

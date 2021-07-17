@@ -10,9 +10,73 @@ import (
 
 
 type Post struct {
-    postId, UserId              int
-    post,  avatarLink, simeStamp string
+    post, title, timestamp  string
+    postId, userid    int
 }
+
+// got one post
+func getPost(id int) (Post, error) {
+    var p Post
+	err := db.QueryRow(
+        "SELECT title, post, userid, timestamp FROM comments.posts WHERE id = ?",
+        id).Scan(&p.title, &p.userid, &p.post, &p.timestamp)
+	if err != nil {
+        return p, err
+	}
+
+    return p, nil
+}
+
+// getPosts get all posts titles from database
+func getPosts() []Post {
+    // get just titles of all posts
+    qur := "select user_id, parent_id, comment_text, timestamp from comments.posts"
+    rows, err := db.Query(qur)
+	if err != nil {
+		fmt.Println("at query func owner id db select ", err)
+	}
+	defer rows.Close() // ??
+
+    posts := make([]Post,1)
+    p := Post{}
+
+	// iterate over rows
+	for rows.Next() {
+        err = rows.Scan(&p.postId, &p.userid, &p.timestamp)
+		if err != nil {
+            fmt.Println("error At getPosts function", err)
+		}
+        posts = append(posts, p)
+
+	}
+    fmt.Println("lenght of data is : ", len(posts))
+    return posts 
+}
+
+
+// save comment in database
+func savePost(c echo.Context) error {
+    
+    sess, _ := session.Get("session", c)
+    data := make(map[string]interface{}, 2)
+    data["userid"] = sess.Values["userid"]
+    data["username"] = sess.Values["username"]
+
+    post := c.FormValue("post")
+
+    // TODO save comment and get data
+
+    fmt.Println( "user id : ", data["userid"],"  post: ", post)
+    // return c.Render(http.StatusOK, "comment.html", data)
+    err :=  c.Render(http.StatusOK, "post.html", data)
+    if err != nil {fmt.Println(err); return nil}; return nil;
+}
+
+// update Post
+func updatPost(){}
+
+// delete Post
+func delletePost(){}
 
 
 // render Post Page 
@@ -26,53 +90,8 @@ func postPage(c echo.Context) error {
 
     data["post"] = "this is a best post you can read in your life. you agree with me ? no ? then go to hell"
 
-    err :=  c.Render(http.StatusOK, "post.html", data)
-    if err != nil {fmt.Println(err); return nil}; return nil;
+    //err :=  c.Render(http.StatusOK, "post.html", data)
+    //if err != nil {fmt.Println(err); return nil}; return nil;
+    return c.Render(http.StatusOK, "post.html", data)
 }
 
-// get Posts from database
-func getPosts(link string) []Comment {
-    qur := "select comment_id, user_id, parent_id, comment_text, created_at from comments.comments where link = ?"
-    rows, err := db.Query(qur, link)
-	if err != nil {
-		fmt.Println("at query func owner id db select ", err)
-	}
-	defer rows.Close() // ??
-
-    comments := make([]Comment,0)
-    c := Comment{}
-
-	// iterate over rows
-	for rows.Next() {
-        err = rows.Scan(&c.CommentId, &c.UserId, &c.ParentId, &c.CommentText, &c.TimeStamp)
-		if err != nil {
-			fmt.Println("At get all my product", err)
-		}
-        comments = append(comments, c)
-
-	}
-    fmt.Println("lenght of data is : ", len(comments))
-	return comments
-}
-
-
-// save comment in database
-func savePost(c echo.Context) error {
-    
-    sess, _ := session.Get("session", c)
-    data := make(map[string]interface{}, 2)
-    data["userid"] = sess.Values["userid"]
-    data["username"] = sess.Values["username"]
-
-    comment := c.FormValue("comment")
-
-    // TODO save comment and get data
-
-    fmt.Println( "user id", data["userid"],"  comment", comment)
-    // return c.Render(http.StatusOK, "comment.html", data)
-    err :=  c.Render(http.StatusOK, "comment.html", data)
-    if err != nil {fmt.Println(err); return nil}; return nil;
-}
-
-func updatPost(){}
-func delletePost(){}

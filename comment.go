@@ -61,16 +61,20 @@ func getComments(link string) []Comment {
 func saveComment(c echo.Context) error {
     
     sess, _ := session.Get("session", c)
-    //data := make(map[string]interface{}, 2)
+    data := make(map[string]interface{}, 2)
     userid := sess.Values["userid"]
+    data["username"] = sess.Values["username"]
     comment := c.FormValue("comment")
     parentid := c.QueryParam("parentid")
+
+    
+    
 
     // TODO save comment and get data
 
     fmt.Println( "user id", userid,"  comment", comment, parentid)
     // return c.Render(http.StatusOK, "comment.html", data)
-    err :=  c.Render(http.StatusOK, "comment.html", nil)
+    err :=  c.Render(http.StatusOK, "comment.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;
 }
 

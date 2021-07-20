@@ -22,8 +22,9 @@ func main() {
     e.POST("/api", saveComment)
 
     e.GET("/", homePage)// index
-    e.GET("/blog", blog)
-    e.GET("/post", postPage)
+    e.GET("/post", blog)
+    e.GET("/:post", postPage)
+    e.POST("/post/:userid", savePost)
     
     // account and verefy
     e.GET("/sign", signPage)

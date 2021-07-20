@@ -8,12 +8,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-
 type Comment struct {
     CommentId, ParentId,  UserId              int
     CommentText,  Link, AvatarLink, TimeStamp string
 }
-
 
 
 // render comments
@@ -67,8 +65,6 @@ func saveComment(c echo.Context) error {
     comment := c.FormValue("comment")
     parentid := c.QueryParam("parentid")
 
-    
-    
 
     // TODO save comment and get data
 

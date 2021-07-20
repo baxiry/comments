@@ -14,23 +14,34 @@ type Post struct {
     postId, userid    int
 }
 
-// got one post
-func getPost(id int) (Post, error) {
+// got  post by postid from database 
+func getPost(postid int) (Post, error) {
     var p Post
 	err := db.QueryRow(
         "SELECT title, post, userid, timestamp FROM comments.posts WHERE id = ?",
-        id).Scan(&p.title, &p.userid, &p.post, &p.timestamp)
+        postid).Scan(&p.title, &p.userid, &p.post, &p.timestamp)
 	if err != nil {
         return p, err
 	}
-
     return p, nil
+}
+
+func showPost(postid int, c echo.Context) error {
+    data := make(map[string]interface{},1)
+
+    data["post"], err = getPost(1)
+    if err != nil {
+        return  err
+    }
+     // return c.Render(http.StatusOK, "comment.html", data)
+     err :=  c.Render(http.StatusOK, "post.html", data)
+    if err != nil {fmt.Println(err); return nil}; return nil;
 }
 
 // getPosts get all posts titles from database
 func getPosts() []Post {
     // get just titles of all posts
-    qur := "select user_id, parent_id, comment_text, timestamp from comments.posts"
+    qur := "select userid, postText, timestamp from comments.posts"
     rows, err := db.Query(qur)
 	if err != nil {
 		fmt.Println("at query func owner id db select ", err)
@@ -42,7 +53,7 @@ func getPosts() []Post {
 
 	// iterate over rows
 	for rows.Next() {
-        err = rows.Scan(&p.postId, &p.userid, &p.timestamp)
+        err = rows.Scan(&p.postId,&p.post, &p.userid, &p.timestamp)
 		if err != nil {
             fmt.Println("error At getPosts function", err)
 		}

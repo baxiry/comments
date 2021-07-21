@@ -2,8 +2,15 @@
 <body>
 <div class=container>
     {{if .post}}
-    <div class="mt-4 m-5-xl">
-        {{.post}}    
+        {{$mypost := .post}}
+        <div class="mt-4 m-5-xl">
+        post title: 
+        {{$mypost.Title}} <br>
+        post body:
+        {{$mypost.Post}}   <br>
+        post date: 
+        {{$mypost.Timestamp}} <br>
+    
     </div>
     {{else}}
 

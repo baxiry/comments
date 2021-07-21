@@ -10,19 +10,21 @@ import (
 
 
 type Post struct {
-    post, title, timestamp  string
-    postId, userid    int
+    Post, Title, Timestamp  string
+    PostId, Ownerid    int
 }
 
 // got  post by postid from database 
 func getPost(postid int) (Post, error) {
-    var p Post
+    p := Post{}
 	err := db.QueryRow(
-        "SELECT title, post, userid, timestamp FROM comments.posts WHERE id = ?",
-        postid).Scan(&p.title, &p.userid, &p.post, &p.timestamp)
+        "SELECT title, post,  timestamp, ownerid FROM comments.posts WHERE postid = ?",
+        postid).Scan(&p.Title, &p.Post, &p.Timestamp, &p.Ownerid)
+
 	if err != nil {
         return p, err
 	}
+    fmt.Println("post in db function si: ", p)
     return p, nil
 }
 
@@ -33,6 +35,8 @@ func showPost(postid int, c echo.Context) error {
     if err != nil {
         return  err
     }
+
+    fmt.Println("data in showPost is :", data["post"])
      // return c.Render(http.StatusOK, "comment.html", data)
      err :=  c.Render(http.StatusOK, "post.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;
@@ -41,7 +45,7 @@ func showPost(postid int, c echo.Context) error {
 // getPosts get all posts titles from database
 func getPosts() []Post {
     // get just titles of all posts
-    qur := "select userid, postText, timestamp from comments.posts"
+    qur := "select ownerid, postText, timestamp from comments.posts"
     rows, err := db.Query(qur)
 	if err != nil {
 		fmt.Println("at query func owner id db select ", err)
@@ -53,7 +57,7 @@ func getPosts() []Post {
 
 	// iterate over rows
 	for rows.Next() {
-        err = rows.Scan(&p.postId,&p.post, &p.userid, &p.timestamp)
+        err = rows.Scan(&p.PostId,&p.Post, &p.Ownerid, &p.Timestamp)
 		if err != nil {
             fmt.Println("error At getPosts function", err)
 		}
@@ -99,10 +103,12 @@ func postPage(c echo.Context) error {
     data["username"] = sess.Values["username"]
     fmt.Println( "usser nam is : ", data["username"])
 
-    data["post"] = "this is a best post you can read in your life. you agree with me ? no ? then go to hell"
+    data["post"], err = getPost(1)//"this is a best post you can read in your life. you agree with me ? no ? then go to hell"
+    if err != nil {fmt.Println("erro is : ", err)}
+    fmt.Println("post is : ", data["post"])
 
-    //err :=  c.Render(http.StatusOK, "post.html", data)
-    //if err != nil {fmt.Println(err); return nil}; return nil;
-    return c.Render(http.StatusOK, "post.html", data)
+    err :=  c.Render(http.StatusOK, "post.html", data)
+    if err != nil {fmt.Println(err); return nil}; return nil;
+    //return c.Render(http.StatusOK, "post.html", data)
 }
 

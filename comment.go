@@ -61,6 +61,7 @@ func saveComment(c echo.Context) error {
     sess, _ := session.Get("session", c)
     data := make(map[string]interface{}, 2)
     userid := sess.Values["userid"]
+    
     data["username"] = sess.Values["username"]
     comment := c.FormValue("comment")
     parentid := c.QueryParam("parentid")
@@ -68,7 +69,7 @@ func saveComment(c echo.Context) error {
 
     // TODO save comment and get data
 
-    fmt.Println( "user id", userid,"  comment", comment, parentid)
+    fmt.Println( "user id:\t", userid,"\ncomment:\t", comment, "\nparent id:\t",parentid)
     // return c.Render(http.StatusOK, "comment.html", data)
     err :=  c.Render(http.StatusOK, "comment.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;

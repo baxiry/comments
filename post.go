@@ -87,10 +87,10 @@ func savePost(c echo.Context) error {
     if err != nil {fmt.Println(err); return nil}; return nil;
 }
 
-// update Post
+// TODO update Post
 func updatPost(){}
 
-// delete Post
+// TODO delete Post
 func delletePost(){}
 
 

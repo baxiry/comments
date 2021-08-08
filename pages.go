@@ -31,8 +31,8 @@ func notFoundPage(c echo.Context) error {
 // updateFotosPage router fo update Fotos Page
 func updateFotosPage(c echo.Context) error {
 	data := make(map[string]interface{})
-    sess, _ := session.Get("session", c) // TODO i need session ?
-    data["name"] = sess.Values["name"] // TODO use user id instead name
+    sess, _ := session.Get("session", c) 
+    data["name"] = sess.Values["name"]
     if data["name"] == nil {
         fmt.Println("session name is nil redirect to login")
         c.Redirect(303, "/login")
@@ -50,15 +50,13 @@ func updateFotosPage(c echo.Context) error {
     return c.Render(http.StatusOK, "updatefotos.html", data)
 }
 
-// TODO redirect to latest page after login.
 func updateProdPage(c echo.Context) error {
-	// TODO whish is beter all data of product or jast photo ?
 	data := make(map[string]interface{})
 	sess, _ := session.Get("session", c)
 	data["name"] = sess.Values["name"]
     data["userid"] = sess.Values["userid"]
 	// User ID from path `users/:id`
-	pid := c.Param("id") // TODO home or catigory.html ?
+	pid := c.Param("id") 
     productId, _ := strconv.Atoi(pid)
 
     fmt.Println("product id from url Param: ", productId)
@@ -83,27 +81,11 @@ func uploadPage(c echo.Context) error {
 	data["name"] = name
     data["userid"] = userid
     if userid == nil {
-		// TODO flash here
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 	// c.Response().Status
 	return c.Render(200, "upload.html", data)
 }
 
-// TODO handle error
-func customHTTPErrorHandler(err error, c echo.Context) {
-	code := http.StatusInternalServerError
-	if he, ok := err.(*echo.HTTPError); ok {
-		code = he.Code
-	}
-    errorPage := fmt.Sprint("/404.html", code)
-	if err := c.File(errorPage); err != nil {
-		c.Logger().Error(err)
-	}
-    fmt.Println(err)
-    //c.Redirect(303, "notfound.html")
-    c.Redirect(http.StatusSeeOther, "/notfound") // 303 code
-    return
-}
 */
 

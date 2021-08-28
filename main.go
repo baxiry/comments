@@ -18,6 +18,7 @@ func main() {
     e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
     // routers
+    e.GET("/json",JsonComments)
     e.GET("/api", commentsPage)
     e.POST("/api", saveComment)
 

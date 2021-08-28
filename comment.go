@@ -23,13 +23,25 @@ func commentsPage(c echo.Context) error {
     data["username"] = sess.Values["username"]
     //fmt.Println( "usser nam is : ", data["username"])
 
-    data["comments"] = getComments("localhost:1323") // get comments by link of article
-    // TODO use json insteade html
-    fmt.Printf("type: %v", data["comments"].([]Comment)[0])
+    comments := getComments("localhost:1323") // get comments by link of article
 
-    err :=  c.Render(http.StatusOK, "comment.html", data)
+    data["comments"] = comments
+    err =  c.Render(http.StatusOK, "comment.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;
 }
+
+
+// TODO
+func JsonComments(c echo.Context) error {
+
+    comments := getComments("localhost:1323") // get comments by link of article
+    
+    // TODO comparison bitwing marshal all in one time or elment by elment
+
+    err = c.JSON(http.StatusOK, comments)
+    if err != nil {fmt.Println(err); return nil}; return nil;
+}
+
 
 // get comments of article from database
 func getComments(link string) []Comment {

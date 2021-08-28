@@ -21,9 +21,11 @@ func commentsPage(c echo.Context) error {
     sess, _ := session.Get("session", c)
     data["userid"] = sess.Values["userid"]
     data["username"] = sess.Values["username"]
-    fmt.Println( "usser nam is : ", data["username"])
+    //fmt.Println( "usser nam is : ", data["username"])
 
     data["comments"] = getComments("localhost:1323") // get comments by link of article
+    // TODO use json insteade html
+    fmt.Printf("type: %v", data["comments"].([]Comment)[0])
 
     err :=  c.Render(http.StatusOK, "comment.html", data)
     if err != nil {fmt.Println(err); return nil}; return nil;
@@ -50,7 +52,7 @@ func getComments(link string) []Comment {
         comments = append(comments, c)
 
 	}
-    fmt.Println("lenght of data is : ", len(comments))
+    //fmt.Println("lenght of data is : ", len(comments))
 	return comments
 }
 

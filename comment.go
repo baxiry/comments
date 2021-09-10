@@ -9,84 +9,91 @@ import (
 )
 
 type Comment struct {
-    CommentId, ParentId,  UserId              int
-    CommentText,  Link, AvatarLink, TimeStamp string
+	CommentId, ParentId, UserId              int
+	CommentText, Link, AvatarLink, TimeStamp string
 }
-
 
 // render comments
 func commentsPage(c echo.Context) error {
 
-    data := make(map[string]interface{},2)
-    sess, _ := session.Get("session", c)
-    data["userid"] = sess.Values["userid"]
-    data["username"] = sess.Values["username"]
-    //fmt.Println( "usser nam is : ", data["username"])
+	data := make(map[string]interface{}, 2)
+	sess, _ := session.Get("session", c)
+	data["userid"] = sess.Values["userid"]
+	data["username"] = sess.Values["username"]
+	//fmt.Println( "usser nam is : ", data["username"])
 
-    comments := getComments("localhost:1323") // get comments by link of article
+	comments := getComments("localhost:1323") // get comments by link of article
 
-    data["comments"] = comments
-    err =  c.Render(http.StatusOK, "comment.html", data)
-    if err != nil {fmt.Println(err); return nil}; return nil;
+	data["comments"] = comments
+	err = c.Render(http.StatusOK, "comment.html", data)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return nil
 }
-
 
 // TODO
 func JsonComments(c echo.Context) error {
 
-    comments := getComments("localhost:1323") // get comments by link of article
-    
-    // TODO comparison bitwing marshal all in one time or elment by elment
+	comments := getComments("localhost:1323") // get comments by link of article
 
-    err = c.JSON(http.StatusOK, comments)
-    if err != nil {fmt.Println(err); return nil}; return nil;
+	// TODO comparison bitwing marshal all in one time or elment by elment
+
+	err = c.JSON(http.StatusOK, comments)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return nil
 }
-
 
 // get comments of article from database
 func getComments(link string) []Comment {
-    qur := "select comment_id, user_id, parent_id, comment_text, created_at from comments.comments where link = ?"
-    rows, err := db.Query(qur, link)
+	qur := "select comment_id, user_id, parent_id, comment_text, created_at from comments.comments where link = ?"
+	rows, err := db.Query(qur, link)
 	if err != nil {
 		fmt.Println("at query func owner id db select ", err)
 	}
 	defer rows.Close() // ??
 
-    comments := make([]Comment,0)
-    c := Comment{}
+	comments := make([]Comment, 0)
+	c := Comment{}
 
 	// iterate over rows
 	for rows.Next() {
-        err = rows.Scan(&c.CommentId, &c.UserId, &c.ParentId, &c.CommentText, &c.TimeStamp)
+		err = rows.Scan(&c.CommentId, &c.UserId, &c.ParentId, &c.CommentText, &c.TimeStamp)
 		if err != nil {
 			fmt.Println("At get all my product", err)
 		}
-        comments = append(comments, c)
+		comments = append(comments, c)
 
 	}
-    //fmt.Println("lenght of data is : ", len(comments))
+	//fmt.Println("lenght of data is : ", len(comments))
 	return comments
 }
 
-
 // save comment in database
 func saveComment(c echo.Context) error {
-    
-    sess, _ := session.Get("session", c)
-    data := make(map[string]interface{}, 2)
-    userid := sess.Values["userid"]
-    
-    data["username"] = sess.Values["username"]
-    comment := c.FormValue("comment")
-    parentid := c.QueryParam("parentid")
 
+	sess, _ := session.Get("session", c)
+	data := make(map[string]interface{}, 2)
+	userid := sess.Values["userid"]
 
-    // TODO save comment and get data
+	data["username"] = sess.Values["username"]
+	comment := c.FormValue("comment")
+	parentid := c.QueryParam("parentid")
 
-    fmt.Println( "user id:\t", userid,"\ncomment:\t", comment, "\nparent id:\t",parentid)
-    // return c.Render(http.StatusOK, "comment.html", data)
-    err :=  c.Render(http.StatusOK, "comment.html", data)
-    if err != nil {fmt.Println(err); return nil}; return nil;
+	// TODO save comment and get data
+
+	fmt.Println("user id:\t", userid, "\ncomment:\t", comment, "\nparent id:\t", parentid)
+	// return c.Render(http.StatusOK, "comment.html", data)
+	err := c.Render(http.StatusOK, "comment.html", data)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return nil
 }
 
 /*

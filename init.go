@@ -59,8 +59,8 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 // path file is depends to enveronment.
 func templ() *Template {
 	// TODO reset tmpl file paht to compatible with this machine
-	var p string
-	if os.Getenv("USERNAME") != "fedora" {
+	p := ""
+	if os.Getenv("USER") != "fedora" {
 		p = "/root/store/"
 	}
 	files := []string{

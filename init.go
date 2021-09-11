@@ -33,7 +33,7 @@ func setdb() *sql.DB {
 		case strings.Contains(err.Error(), "connection refused"):
 			// TODO handle errors by code of error not by strings.
 
-			cmd := exec.Command("sudo", "service", "mariadb", "start")
+			cmd := exec.Command("mysql.server", "restart") // for systemd linux : exec.Command("sudo", "service", "mariadb", "start")
 			//cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))
 			errc := cmd.Run()
 			if errc != nil {
@@ -58,32 +58,34 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 // path file is depends to enveronment.
 func templ() *Template {
-	// TODO reset tmpl file paht to compatible with this machine
-	p := ""
-	if os.Getenv("USER") != "fedora" {
-		p = "/root/store/"
-	}
+	// TODO use go:embed
+
 	files := []string{
-		p + "tmpl/home.html", p + "tmpl/upacount.html", p + "tmpl/acount.html",
-		p + "tmpl/login.html", p + "tmpl/sign.html", p + "tmpl/404.html", p + "tmpl/upphotos.html",
-		p + "tmpl/upcomment.html", p + "tmpl/comment.html", p + "tmpl/notfound.html", p + "tmpl/post.html",
-		p + "tmpl/upload.html", p + "tmpl/part/header.html", p + "tmpl/part/footer.html",
+		"tmpl/home.html", "tmpl/upacount.html", "tmpl/acount.html",
+		"tmpl/login.html", "tmpl/sign.html", "tmpl/404.html", "tmpl/upphotos.html",
+		"tmpl/upcomment.html", "tmpl/comment.html", "tmpl/notfound.html", "tmpl/post.html",
+		"tmpl/upload.html", "tmpl/part/header.html", "tmpl/part/footer.html",
 	}
 	return &Template{templates: template.Must(template.ParseFiles(files...))}
 }
 
+/*
 //  get path of photo folder
 func photoFold() string {
-	if os.Getenv("USERNAME") == "fedor" {
-		return "/home/fedor/repo/files/"
-	}
-	return "/root/files/"
+	//if os.Getenv("USERNAME") == "fedor" {
+	//	return "/home/fedor/repo/files/"
+	//}
+	return "../files/" // or "/root/files/"
 }
+
+// TODO use go:embed for assets
 
 //  assets return path assets.
 func assets() string {
-	if os.Getenv("USERNAME") != "fedor" {
-		return "/root/store/assets"
-	}
+	//if os.Getenv("USERNAME") != "fedor" {
+	//	return "/root/store/assets"
+	//}
+	fmt.Println("we are on mac")
 	return "assets"
 }
+*/

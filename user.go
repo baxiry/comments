@@ -14,15 +14,14 @@ func acount(c echo.Context) error {
 	sess, _ := session.Get("session", c)
 	data := make(map[string]interface{}, 2)
 	data["username"] = sess.Values["username"]
-    data["userid"] = sess.Values["userid"]
+	data["userid"] = sess.Values["userid"]
 	// TODO get all info like foto from db
 
-    if data["userid"] == nil {
+	if data["userid"] == nil {
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 	return c.Render(200, "acount.html", data)
 }
-
 
 // updateAcount updates Acount information
 func updateAcountInfo(c echo.Context) error {
@@ -62,14 +61,14 @@ func updateAcount(c echo.Context) error {
 
 	data["username"] = username
 
-    if userid == nil {
+	if userid == nil {
 		// login first
 		return c.Redirect(http.StatusSeeOther, "/login") // 303 code
 	}
 
-    data["username"], data["email"], data["linkavatar"] = getUserInfo(userid.(int))
+	data["username"], data["email"], data["linkavatar"] = getUserInfo(userid.(int))
 
-    data["userid"] = userid
+	data["userid"] = userid
 
 	fmt.Println(data)
 
@@ -82,7 +81,6 @@ func getUser(c echo.Context) error {
 	id := c.Param("id")
 	return c.Render(http.StatusOK, "user.html", id)
 }
-
 
 func updateUserInfo(name, email string, uid int) error {
 
@@ -109,28 +107,27 @@ func updateUserInfo(name, email string, uid int) error {
 }
 
 // gets all user information for update this info
-func getUserInfo(userid int) ( string, string, string) {
+func getUserInfo(userid int) (string, string, string) {
 	var name, email, avatar string
 	err := db.QueryRow(
-        "SELECT username, email, linkavatar FROM comments.users WHERE user_id = ?",
+		"SELECT username, email, linkavatar FROM comments.users WHERE userid = ?",
 		userid).Scan(&name, &email, &avatar)
 	if err != nil {
 		fmt.Println("no result or", err.Error())
 	}
-    fmt.Println("name is : ", name, "email is : ", email, "avatar is ", avatar)
+	fmt.Println("name is : ", name, "email is : ", email, "avatar is ", avatar)
 	return name, email, avatar
 }
 
-// get all username
+// get an username by email
 func getUsername(femail string) (int, string, string, string) {
 	var name, email, password string
 	var userid int
 	err := db.QueryRow(
-        "SELECT user_id, username, email, password FROM comments.users WHERE email = ?",
+		"SELECT userid, username, email, password FROM comments.users WHERE email = ?",
 		femail).Scan(&userid, &name, &email, &password)
 	if err != nil {
 		fmt.Println("no result or", err.Error())
 	}
 	return userid, name, email, password
 }
-

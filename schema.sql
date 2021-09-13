@@ -32,7 +32,8 @@ Schema::create('comments', function (Blueprint $table) {
 
 CREATE TABLE comments.posts (
     postid INT NOT NULL AUTO_INCREMENT,
-    title TINYTEXT, post TEXT,
+    title TINYTEXT,
+    post TEXT,
     timestamp TIMESTAMP,
     primary key (postid)
 );

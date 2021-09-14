@@ -7,27 +7,7 @@ CREATE TABLE users (
     PRIMARY KEY (userid)
 );
 
-CREATE TABLE comments (
-    userId int unsigned NOT NULL,
-    commentId int unsigned NOT NULL,
-    parentId int unsigned DEFAULT 0,
-    comment text NOT NULL,
-    creatAt TIMESTAMP,
-    editedAt TIMESTAMP,
-    PRIMARY KEY (userid)
-);
-
-Schema::create('comments', function (Blueprint $table) {
-       $table->increments('id');
-       $table->integer('user_id')->unsigned();
-       $table->integer('parent_id')->unsigned();
-       $table->text('comment');
-       $table->integer('commentable_id')->unsigned();
-       $table->string('commentable_type');
-       $table->timestamps();
-});
-
-
+CREATE TABLE comments ( commentId int unsigned NOT NULL AUTO_INCREMENT, userId int(9) unsigned NOT NULL, parentId int unsigned DEFAULT 0, comment text NOT NULL,creatAt TIMESTAMP, PRIMARY KEY (commentId));
 
 
 CREATE TABLE comments.posts (

@@ -50,7 +50,7 @@ func JsonComments(c echo.Context) error {
 
 // get comments of article from database
 func getComments(link string) []Comment {
-	qur := "select commentId, userid, parentId, comment, creatAt from comments.comments where link = ?"
+	qur := "select commentId, userId, parentId, comment, creatAt from comments.comments where linkPost = ?"
 	rows, err := db.Query(qur, link)
 	if err != nil {
 		fmt.Println("at query func owner id db select ", err)

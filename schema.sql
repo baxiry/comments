@@ -9,7 +9,6 @@ CREATE TABLE users (
 
 CREATE TABLE comments ( commentId int unsigned NOT NULL AUTO_INCREMENT, userId int(9) unsigned NOT NULL, parentId int unsigned DEFAULT 0, comment text NOT NULL,creatAt TIMESTAMP, PRIMARY KEY (commentId));
 
-
 CREATE TABLE comments.posts (
     postid INT NOT NULL AUTO_INCREMENT,
     title TINYTEXT,
@@ -17,7 +16,6 @@ CREATE TABLE comments.posts (
     timestamp TIMESTAMP,
     primary key (postid)
 );
-
 
 
 insert into posts(title, post) values(

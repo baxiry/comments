@@ -58,13 +58,20 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 // path file is depends to enveronment.
 func templ() *Template {
-	// TODO use go:embed
+	// TODO what wrong with go:embed ?
+	// TODO fix path deploy problem
+
+	p := ""
+	home := os.Getenv("HOME")
+	if home != "/Users/fedora" {
+		p = "/root/"
+	}
 
 	files := []string{
-		"tmpl/home.html", "tmpl/upacount.html", "tmpl/acount.html",
-		"tmpl/login.html", "tmpl/sign.html", "tmpl/404.html", "tmpl/upphotos.html",
-		"tmpl/upcomment.html", "tmpl/comment.html", "tmpl/notfound.html", "tmpl/post.html",
-		"tmpl/upload.html", "tmpl/part/header.html", "tmpl/part/footer.html",
+		p + "tmpl/home.html", p + "tmpl/upacount.html", p + "tmpl/acount.html",
+		p + "tmpl/login.html", p + "tmpl/sign.html", p + "tmpl/404.html", p + "tmpl/upphotos.html",
+		p + "tmpl/upcomment.html", p + "tmpl/comment.html", p + "tmpl/notfound.html", "tmpl/post.html",
+		p + "tmpl/upload.html", p + "tmpl/part/header.html", p + "tmpl/part/footer.html",
 	}
 	return &Template{templates: template.Must(template.ParseFiles(files...))}
 }
@@ -72,9 +79,9 @@ func templ() *Template {
 /*
 //  get path of photo folder
 func photoFold() string {
-	//if os.Getenv("USERNAME") == "fedor" {
-	//	return "/home/fedor/repo/files/"
-	//}
+	if os.Getenv("HOME") == "fedora" {
+		return "/home/fedor/repo/files/"
+	}
 	return "../files/" // or "/root/files/"
 }
 

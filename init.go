@@ -59,7 +59,6 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 // path file is depends to enveronment.
 func templ() *Template {
 	// TODO what wrong with go:embed ?
-	// TODO fix path deploy problem
 
 	p := ""
 	home := os.Getenv("HOME")
@@ -76,23 +75,20 @@ func templ() *Template {
 	return &Template{templates: template.Must(template.ParseFiles(files...))}
 }
 
-/*
-//  get path of photo folder
-func photoFold() string {
-	if os.Getenv("HOME") == "fedora" {
-		return "/home/fedor/repo/files/"
-	}
-	return "../files/" // or "/root/files/"
-}
-
-// TODO use go:embed for assets
-
 //  assets return path assets.
 func assets() string {
-	//if os.Getenv("USERNAME") != "fedor" {
-	//	return "/root/store/assets"
-	//}
-	fmt.Println("we are on mac")
+	if os.Getenv("HOME") != "/Users/fedora" {
+		return "/root/comments/assets"
+	}
 	return "assets"
+}
+
+/*
+//  get path of photo folder
+func photoFolder() string {
+	if os.Getenv("HOME") == "/Users/fedora" {
+		return "/Users/fedor/repo/files/"
+	}
+	return "../files/" // or "/root/files/"
 }
 */

@@ -36,7 +36,7 @@ func main() {
 	e.POST("/upacount", updateAcountInfo)
 
 	// files
-	e.Static("/a", "assets")
+	e.Static("/a", assets())
 	e.Static("/fs", "../photos")
 
 	e.Logger.Fatal(e.Start(":1323"))

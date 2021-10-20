@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// acount render profile of user.
+// acount render profile of user. ok
 func acount(c echo.Context) error {
 	sess, _ := session.Get("session", c)
 	data := make(map[string]interface{}, 2)

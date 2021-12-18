@@ -26,15 +26,18 @@ func setdb() *sql.DB {
 		fmt.Println("error when open mysql server", err)
 		// TODO report this error.
 		os.Exit(1)
+
 	}
 
 	if err = db.Ping(); err != nil {
+
 		fmt.Println("error when ping to database", err)
 		switch {
 		case strings.Contains(err.Error(), "connection refused"):
 			// TODO handle errors by code of error not by strings.
 
-			cmd := exec.Command("mysql.server", "restart") // for systemd linux : exec.Command("sudo", "service", "mariadb", "start")
+			cmd := exec.Command("mysql.server", "restart")
+			// for systemd linux : exec.Command("sudo", "service", "mariadb", "start")
 			//cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))
 			errc := cmd.Run()
 			if errc != nil {

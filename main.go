@@ -11,7 +11,9 @@ import (
 func main() {
 	e := echo.New()
 	e.Renderer = templ()
+
 	db := setdb()
+
 	defer db.Close()
 
 	// middleware

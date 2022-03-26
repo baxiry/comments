@@ -92,17 +92,11 @@ func updateUserInfo(name, email string, uid int) error {
 	defer stmt.Close()
 
 	// execute
-	res, err := stmt.Exec(name, email, uid)
+	_, err = stmt.Exec(name, email, uid)
 	if err != nil {
 		return err
 	}
 
-	a, err := res.RowsAffected()
-	if err != nil {
-		return err
-	}
-
-	fmt.Println("efected foto update: ", a) // 1
 	return nil
 }
 
@@ -117,17 +111,4 @@ func getUserInfo(userid int) (string, string, string) {
 	}
 	fmt.Println("name is : ", name, "email is : ", email, "avatar is ", avatar)
 	return name, email, avatar
-}
-
-// get an username by email
-func getUsername(femail string) (int, string, string, string) {
-	var name, email, password string
-	var userid int
-	err := db.QueryRow(
-		"SELECT userid, username, email, password FROM comments.users WHERE email = ?",
-		femail).Scan(&userid, &name, &email, &password)
-	if err != nil {
-		fmt.Println("no result or", err.Error())
-	}
-	return userid, name, email, password
 }

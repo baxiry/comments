@@ -28,6 +28,18 @@ func login(c echo.Context) error {
 	return c.Render(200, "login.html", data)
 }
 
+// get an username by email
+func getUsername(femail string) (int, string, string, string) {
+	var name, email, password string
+	var userid int
+	err := db.QueryRow(
+		"SELECT userid, username, email, password FROM comments.users WHERE email = ?",
+		femail).Scan(&userid, &name, &email, &password)
+	if err != nil {
+		fmt.Println("Error with db.QueryRow", err.Error())
+	}
+	return userid, name, email, password
+}
 func insertUser(user, pass, email string) error {
 	_, err := db.Exec(
 		"INSERT INTO comments.users(username, password, email) VALUES ( ?, ?, ?)",

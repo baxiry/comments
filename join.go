@@ -20,28 +20,25 @@ func login(c echo.Context) error {
 		setSession(c, username, userid)
 		return c.Redirect(http.StatusSeeOther, "/") // 303 code
 		// TODO redirect to latest page
-    } 
+	}
 
-    data := make(map[string]interface{}, 2)
-    data["userid"] = nil
-    data["error"] = "user information is not correct"
-    return c.Render(200, "login.html", data)
+	data := make(map[string]interface{}, 2)
+	data["userid"] = nil
+	data["error"] = "user information is not correct"
+	return c.Render(200, "login.html", data)
 }
 
-
-
 func insertUser(user, pass, email string) error {
-	insert, err := db.Query(
+	_, err := db.Exec(
 		"INSERT INTO comments.users(username, password, email) VALUES ( ?, ?, ?)",
 		user, pass, email)
 
 	// if there is an error inserting, handle it
 	if err != nil {
-        fmt.Println(err)
+		fmt.Println(err)
 		return err
 	}
 	// be careful deferring Queries if you are using transactions
-	defer insert.Close()
 	return nil
 }
 
@@ -57,7 +54,6 @@ func setSession(c echo.Context, username string, userid int) {
 	sess.Save(c.Request(), c.Response())
 }
 
-
 func signup(c echo.Context) error {
 	username := c.FormValue("username")
 	pass := c.FormValue("password")
@@ -71,22 +67,19 @@ func signup(c echo.Context) error {
 }
 
 func signPage(c echo.Context) error {
-    data := make(map[string]interface{},1)
+	data := make(map[string]interface{}, 1)
 	sess, _ := session.Get("session", c)
-    data["userid"] = sess.Values["userid"]
-    data["username"] = sess.Values["username"]
-    return c.Render(200, "sign.html", data)
-    //fmt.Println( c.Render(200, "sign.html", sess.Values["userid"].(int))); return nil
+	data["userid"] = sess.Values["userid"]
+	data["username"] = sess.Values["username"]
+	return c.Render(200, "sign.html", data)
+	//fmt.Println( c.Render(200, "sign.html", sess.Values["userid"].(int))); return nil
 }
-
 
 func loginPage(c echo.Context) error {
-    data := make(map[string]interface{},1)
+	data := make(map[string]interface{}, 1)
 	sess, _ := session.Get("session", c)
-    data["userid"] = sess.Values["userid"]
-    data["username"] = sess.Values["username"]
-    return c.Render(200, "login.html", data)
-    //fmt.Println( c.Render(200, "login.html", data)); return nil
+	data["userid"] = sess.Values["userid"]
+	data["username"] = sess.Values["username"]
+	return c.Render(200, "login.html", data)
+	//fmt.Println( c.Render(200, "login.html", data)); return nil
 }
-
-

@@ -6,21 +6,19 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// TODO fix all bugs firstly
-
 func main() {
+	db := setdb()
+	defer db.Close()
+
 	e := echo.New()
 	e.Renderer = templ()
-
-	db := setdb()
-
-	defer db.Close()
 
 	// middleware
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
 	// routers
 	e.GET("/json", JsonComments)
+	e.GET("/masroq", masroq)
 	e.GET("/api", commentsPage)
 	e.POST("/api", saveComment)
 

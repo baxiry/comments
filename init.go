@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -21,8 +22,8 @@ var (
 
 func setdb() *sql.DB {
 	db, err = sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
-	if err != nil { // why no error when db is not runinig ??
-		fmt.Println("error when open mysql server", err)
+	if err != nil {
+		log.Println("error when open mysql server", err)
 		// TODO report this error.
 		os.Exit(1)
 
@@ -30,7 +31,7 @@ func setdb() *sql.DB {
 
 	if err = db.Ping(); err != nil {
 
-		fmt.Println("error when ping to database", err)
+		log.Println("error when ping to database", err)
 		switch {
 		case strings.Contains(err.Error(), "connection refused"):
 			// TODO handle errors by code of error not by strings.
@@ -43,8 +44,8 @@ func setdb() *sql.DB {
 				fmt.Println("error when run database cmd ", errc)
 			}
 		default:
-			fmt.Println("error at  setdb() func, db.Ping() func")
-			fmt.Println("unknown this error", err)
+			log.Println("error at  setdb() func, db.Ping() func")
+			log.Println("unknown this error", err)
 			os.Exit(1)
 		}
 	}
@@ -70,7 +71,7 @@ func templ() *Template {
 	}
 
 	files := []string{
-		p + "tmpl/home.html", p + "tmpl/upacount.html", p + "tmpl/acount.html",
+		p + "tmpl/home.html", p + "tmpl/upacount.html", p + "tmpl/acount.html", p + "tmpl/masroq.html",
 		p + "tmpl/login.html", p + "tmpl/sign.html", p + "tmpl/404.html", p + "tmpl/upphotos.html",
 		p + "tmpl/upcomment.html", p + "tmpl/comment.html", p + "tmpl/notfound.html", "tmpl/post.html",
 		p + "tmpl/upload.html", p + "tmpl/part/header.html", p + "tmpl/part/footer.html",

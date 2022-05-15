@@ -10,12 +10,16 @@ import (
 func homePage(c echo.Context) error {
 
 	sess, _ := session.Get("session", c)
-	
-    data := make(map[string]interface{}, 3)
-    data["username"] = sess.Values["username"]
-    data["userid"] = sess.Values["userid"]
 
-    return c.Render(http.StatusOK, "home.html", data)
+	data := make(map[string]interface{}, 3)
+	data["username"] = sess.Values["username"]
+	data["userid"] = sess.Values["userid"]
+
+	return c.Render(http.StatusOK, "home.html", data)
+}
+
+func masroq(c echo.Context) error {
+	return c.Render(http.StatusOK, "masroq.html", nil)
 }
 
 /*
@@ -31,14 +35,14 @@ func notFoundPage(c echo.Context) error {
 // updateFotosPage router fo update Fotos Page
 func updateFotosPage(c echo.Context) error {
 	data := make(map[string]interface{})
-    sess, _ := session.Get("session", c) 
+    sess, _ := session.Get("session", c)
     data["name"] = sess.Values["name"]
     if data["name"] == nil {
         fmt.Println("session name is nil redirect to login")
         c.Redirect(303, "/login")
     }
-	
-    pid := c.Param("id") 
+
+    pid := c.Param("id")
     productId, _ := strconv.Atoi(pid)
 
     data["productFotos"] , err = getProductFotos(productId)
@@ -56,7 +60,7 @@ func updateProdPage(c echo.Context) error {
 	data["name"] = sess.Values["name"]
     data["userid"] = sess.Values["userid"]
 	// User ID from path `users/:id`
-	pid := c.Param("id") 
+	pid := c.Param("id")
     productId, _ := strconv.Atoi(pid)
 
     fmt.Println("product id from url Param: ", productId)
@@ -88,4 +92,3 @@ func uploadPage(c echo.Context) error {
 }
 
 */
-

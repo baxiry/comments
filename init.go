@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 	"text/template"
 
@@ -23,30 +22,24 @@ var (
 func setdb() *sql.DB {
 	db, err = sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
-		log.Println("error when open mysql server", err)
-		// TODO report this error.
-		os.Exit(1)
 
-	}
-
-	if err = db.Ping(); err != nil {
-
-		log.Println("error when ping to database", err)
+		log.Println("open database error: ", err)
 		switch {
 		case strings.Contains(err.Error(), "connection refused"):
 			// TODO handle errors by code of error not by strings.
 
-			cmd := exec.Command("mysql.server", "restart")
+			//cmd := exec.Command("mysql.server", "restart")
 			// for systemd linux : exec.Command("sudo", "service", "mariadb", "start")
 			//cmd.Stdin = strings.NewReader(os.Getenv("JAWAD"))
-			errc := cmd.Run()
-			if errc != nil {
-				fmt.Println("error when run database cmd ", errc)
+			//err = cmd.Run()
+			if err != nil {
+				fmt.Println("error when run database cmd ", err)
 			}
 		default:
-			log.Println("error at  setdb() func, db.Ping() func")
+			log.Println("not knowen err at db.Ping() func")
 			log.Println("unknown this error", err)
 			os.Exit(1)
+			//return nil
 		}
 	}
 	return db

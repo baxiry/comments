@@ -78,22 +78,17 @@ func saveComment(c echo.Context) error {
 
 	sess, _ := session.Get("session", c)
 	data := make(map[string]interface{}, 2)
-	userid := sess.Values["userid"]
+	//userid := sess.Values["userid"]
 
 	data["username"] = sess.Values["username"]
+	//comment := c.FormValue("comment")
+
 	comment := c.FormValue("comment")
-	parentid := c.QueryParam("parentid")
 
-	// TODO save comment and get data
+	fmt.Println("comment is  is : ", comment)
+	fmt.Println("---------------------------------------------")
 
-	fmt.Println("user id:\t", userid, "\ncomment:\t", comment, "\nparent id:\t", parentid)
-	// return c.Render(http.StatusOK, "comment.html", data)
-	err := c.Render(http.StatusOK, "comment.html", data)
-	if err != nil {
-		fmt.Println(err)
-		return nil
-	}
-	return nil
+	return c.Render(http.StatusOK, "comment.html", data)
 }
 
 /*

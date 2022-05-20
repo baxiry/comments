@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html> <!-- <html dir="rtl"> for arabic -->
 <head>
@@ -6,6 +7,7 @@
   <meta charset=UTF-8>
   <script>/* Todo : use framwork.min.js here */ </script>
   <link rel="stylesheet" href="/a/bs5.min.css">
+  <script src="/a/app.js" ></script>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -14,7 +16,7 @@
 
         <div class="">
          {{if .username}}
-              <h5>{{.username}}</h5>
+              <h5 class="float-end">{{.username}}</h5>
          {{else}}
               <a class="btn btn-outline-success m-1" href="/login" >login</a>
               <a class="btn btn-outline-success m-1" href="/sign" >signup</a>
@@ -25,8 +27,9 @@
    
       <form action="/api?parentid=4" method=post>
         <textarea  name="comment" id=comment placeholder="write a comment" rows="3" class="form-control"></textarea> <br>
-        <input type="submit" value="Submit" class="btn btn-primary">
+        <input type="button" value="Submit" class="btn btn-primary">
       </form>
+       <button id="post" class="btn btn-primary" onclick="postData()">Click me</button> 
 
       <div > 
         {{range .comments}}
@@ -36,15 +39,12 @@
         <div>comment :    {{.CommentText}}</div>
         <div>date :       {{.TimeStamp}}</div>
         <br>
-        <!--
         <div>user id :    {{.UserId}}</div>
         <div>link :       {{.Link}}</div>
         <div>avatar :     {{.AvatarLink}}</div>
-        -->
         {{end}}
       </div>
 </div>
-<style></style>
 </body>
 </html>
 

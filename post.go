@@ -15,16 +15,17 @@ type Post struct {
 
 // got  post by postid from database
 func getPost(postid int) (Post, error) {
-	p := Post{}
+	post := Post{}
 	err := db.QueryRow(
 		"SELECT title, post,  creatAt, ownerId FROM comments.posts WHERE postId = ?",
-		postid).Scan(&p.Title, &p.Post, &p.Timestamp, &p.Ownerid)
+		postid).Scan(&post.Title, &post.Post, &post.Timestamp, &post.Ownerid)
 
 	if err != nil {
-		return p, err
+		return post, err
 	}
-	fmt.Println("post in db function si: ", p)
-	return p, nil
+
+	fmt.Println("post in db function si: ", post)
+	return post, nil
 }
 
 func showPost(postid int, c echo.Context) error {

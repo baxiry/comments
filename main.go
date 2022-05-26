@@ -8,6 +8,7 @@ import (
 
 func main() {
 	db := setdb()
+	
 	defer db.Close()
 
 	e := echo.New()

@@ -20,6 +20,7 @@ var (
 )
 
 func setdb() *sql.DB {
+
 	db, err = sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 

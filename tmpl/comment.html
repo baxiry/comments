@@ -1,4 +1,4 @@
-
+html:5
 <!DOCTYPE html>
 <html> <!-- <html dir="rtl"> for arabic -->
 <head>
@@ -25,12 +25,12 @@
         </div>
        
    
-      <form action="/api?parentid=4" method=post>
-        <textarea  name="comment" id=comment placeholder="write a comment" rows="3" class="form-control"></textarea> <br>
-        <input type="button" value="Submit" class="btn btn-primary">
-      </form>
+      <!-- <form action="/api?parentid=4" method=post> </form> -->
+<form action="/api?parentid=4" method=post>
+        <textarea  name="comment" id=comment placeholder="write a comment" rows="3" class="form-control" required></textarea> <br>
+        <button type="submit" class="btn btn-primary">submit</button>
+</form>
        <button id="post" class="btn btn-primary" onclick="postData()">Click me</button> 
-
       <div > 
         {{range .comments}}
 

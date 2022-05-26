@@ -11,6 +11,7 @@ import (
 
 // acount render profile of user. ok
 func acount(c echo.Context) error {
+
 	sess, _ := session.Get("session", c)
 	data := make(map[string]interface{}, 2)
 	data["username"] = sess.Values["username"]

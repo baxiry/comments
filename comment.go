@@ -9,8 +9,28 @@ import (
 )
 
 type Comment struct {
-	CommentId, ParentId, UserId              int
-	CommentText, Link, AvatarLink, TimeStamp string
+	CommentId   int    `json:"id"`
+	ParentId    int    `json:"title"`
+	UserId      int    `json:"author"`
+	CommentText string `json:"comment"`
+	Link        string `json:"link"`
+	AvatarLink  string `json:"avatarlink"`
+	TimeStamp   string `json:"timestamp"`
+}
+
+// TODO
+func JsonComments(c echo.Context) error {
+
+	comments := getComments("localhost:1323") // get comments by link of article
+
+	// TODO comparison bitwing marshal all in one time or elment by elment
+
+	err = c.JSON(http.StatusOK, comments)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+	return nil
 }
 
 // render comments
@@ -26,21 +46,6 @@ func commentsPage(c echo.Context) error {
 
 	data["comments"] = comments
 	err = c.Render(http.StatusOK, "comment.html", data)
-	if err != nil {
-		fmt.Println(err)
-		return nil
-	}
-	return nil
-}
-
-// TODO
-func JsonComments(c echo.Context) error {
-
-	comments := getComments("localhost:1323") // get comments by link of article
-
-	// TODO comparison bitwing marshal all in one time or elment by elment
-
-	err = c.JSON(http.StatusOK, comments)
 	if err != nil {
 		fmt.Println(err)
 		return nil
